@@ -1,0 +1,41 @@
+ref:
+  as: mco-e2e-test-balanced
+  from: tests
+  grace_period: 10m
+  commands: mco-e2e-test-balanced-commands.sh
+  timeout: 14400s
+  env:
+  - name: MCO_SHARD_CAPACITY
+    default: "14400"
+  - name: TEST_ARGS
+    default: ""
+  - name: SHARD_ARGS
+    default: ""
+  - name: TEST_SUITE
+    default: openshift/conformance/parallel
+  - name: TEST_SKIPS
+    default: ""
+  - name: TEST_REQUIRES_SSH
+    default: ""
+  - name: TEST_INSTALL_CSI_DRIVERS
+    default: ""
+  - name: TEST_CSI_DRIVER_MANIFEST
+    default: ""
+  - name: TEST_OCP_CSI_DRIVER_MANIFEST
+    default: ""
+  - name: OPENSHIFT_SKIP_EXTERNAL_TESTS
+    default: ""
+  dependencies:
+  - name: "release:latest"
+    env: OPENSHIFT_UPGRADE_RELEASE_IMAGE_OVERRIDE
+  resources:
+    requests:
+      cpu: "3"
+      memory: 600Mi
+    limits:
+      memory: 10Gi
+  documentation: |-
+    Executes e2e tests using a pre-computed balanced shard assignment
+    from SHARED_DIR instead of the default SHA-256 hash-based sharding.
+    Falls back to standard openshift-e2e-test behavior if no balanced
+    assignment is found.
